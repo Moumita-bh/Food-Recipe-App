@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Recipes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="navbar"></div>
+    <div class="content">
+        <h1>Random Recipes</h1>
+        <div id="random-recipes"></div>
+    </div>
+    <script type="module">
+        import { loadNavbar } from './navbar.js';
+        import { getRandomRecipes } from './api.js';
+        loadNavbar();
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const recipes = await getRandomRecipes();
+            const recipesDiv = document.getElementById('random-recipes');
+            if (recipes && recipes.length > 0) {
+                recipes.forEach(recipe => {
+                    const recipeDiv = document.createElement('div');
+                    recipeDiv.innerHTML = `
+                        <h2>${recipe.strMeal}</h2>
+                        <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}">
+                        <p>${recipe.strInstructions}</p>
+                    `;
+                    recipesDiv.appendChild(recipeDiv);
+                });
+            } else {
+                recipesDiv.innerHTML = '<p>No recipes found.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

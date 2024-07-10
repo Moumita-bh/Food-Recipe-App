@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe of the Day</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="navbar"></div>
+    <div class="content">
+        <h1>Recipe of the Day</h1>
+        <div id="recipe-of-the-day"></div>
+    </div>
+    <script type="module">
+        import { loadNavbar } from './navbar.js';
+        import { getRecipeOfTheDay } from './api.js';
+        loadNavbar();
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const recipe = await getRecipeOfTheDay();
+            const recipeDiv = document.getElementById('recipe-of-the-day');
+            if (recipe) {
+                recipeDiv.innerHTML = `
+                    <h2>${recipe.strMeal}</h2>
+                    <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}">
+                    <p>${recipe.strInstructions}</p>
+                `;
+            } else {
+                recipeDiv.innerHTML = '<p>No recipe found.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
